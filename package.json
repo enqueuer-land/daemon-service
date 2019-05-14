@@ -1,0 +1,47 @@
+{
+  "name": "daemon-service",
+  "version": "0.0.1",
+  "description": "Executes enqueuer as a daemon service",
+  "main": "dist/index.js",
+  "types": "dist/index.d.ts",
+  "scripts": {
+    "clean": "rm -rf dist",
+    "start": "node dist/index",
+    "all": "npm run clean && npm run lint && npm run build",
+    "lint": "node_modules/.bin/tslint --project tsconfig.json",
+    "prepublishOnly": "npm run all",
+    "build": "tsc"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/enqueuer-land/daemon-service.git"
+  },
+  "keywords": [
+    "enqueuer",
+    "nqr",
+    "daemon",
+    "service",
+    "rest",
+    "plugin"
+  ],
+  "author": "Virgs",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/enqueuer-land/daemon-service/issues"
+  },
+  "homepage": "https://github.com/enqueuer-land/daemon-service#readme",
+  "bin": {
+    "enqueuer-daemon": "node dist/index"
+  },
+  "devDependencies": {
+    "@types/node": "^11.9.4",
+    "ts-node": "^8.0.2",
+    "tslint": "^5.11.0",
+    "typescript": "^3.0.1"
+  },
+  "dependencies": {
+    "@types/express": "^4.16.1",
+    "enqueuer": "^4.6.1",
+    "express": "^4.16.4"
+  }
+}
