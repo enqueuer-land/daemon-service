@@ -3,25 +3,20 @@ language: node_js
 sudo: required
 
 node_js:
-- v10.8.0
+    - v10.8.0
 
 cache:
     directories:
-    - node_modules
+        - node_modules
 
 notifications:
     email:
-        recipients:
-        - guilherme.moraes@outlook.com
         on_success: never
         on_failure: always
 
-services:
-- rabbitmq
-
 script:
-- npm install
-- npm run lint
-- npm run build
-- npm link
-#- nqr -a examples/amqp.yml -l `pwd`
+    - npm install
+    - npm run lint
+    - npm run build
+    - npm link
+    - nqr misc/test.yml

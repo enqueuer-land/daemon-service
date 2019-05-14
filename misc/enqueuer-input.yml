@@ -1,0 +1,17 @@
+publishers:
+    -   type: http
+        url: http://localhost:23075/enqueuer
+        method: POST
+        payload: virgs
+        onMessageReceived:
+            assertions:
+                -   expect: statusCode
+                    toBeEqualTo: 444
+subscriptions:
+    -   type: http
+        endpoint: /enqueuer
+        port: 23075
+        method: POST
+        response:
+            status: 444
+            payload: blah
