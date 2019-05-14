@@ -1,3 +1,5 @@
+#!/usr/bin/env node
+
 import express from 'express';
 import {RequisitionParser} from 'enqueuer/js/requisition-runners/requisition-parser';
 import {RequisitionRunner} from 'enqueuer/js/requisition-runners/requisition-runner';

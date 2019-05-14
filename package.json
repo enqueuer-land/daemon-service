@@ -31,7 +31,7 @@
   },
   "homepage": "https://github.com/enqueuer-land/daemon-service#readme",
   "bin": {
-    "enqueuer-daemon": "node dist/index"
+    "enqueuer-daemon": "dist/index"
   },
   "devDependencies": {
     "@types/node": "^11.9.4",
