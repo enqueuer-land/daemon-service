@@ -5,6 +5,7 @@ import {RequisitionParser} from 'enqueuer/js/requisition-runners/requisition-par
 import {RequisitionRunner} from 'enqueuer/js/requisition-runners/requisition-runner';
 import {Store} from 'enqueuer/js/configurations/store';
 import {Configuration} from 'enqueuer/js/configurations/configuration';
+import {ReportModel} from 'enqueuer/js/models/outputs/report-model';
 
 const app = express();
 
@@ -19,14 +20,33 @@ app.use((req: any, res: any, next: any) => {
     });
 });
 
+const reportsHistory: any = {};
+
+// Logger.setLoggerLevel('trace');
 app.post('/requisitions', async (requisition: any, response: any) => {
     const requisitionModel = new RequisitionParser().parse(requisition.rawBody);
-    const reports = await new RequisitionRunner(requisitionModel).run();
-    response.send(reports);
+    try {
+        const reports = await new RequisitionRunner(requisitionModel).run();
+        reports.forEach((item: ReportModel) => reportsHistory[item.id] = item);
+        response.send(reports);
+    } catch (e) {
+        response.status(400).send(e);
+    }
 });
 
-app.get('/stores', async (requisition: any, response: any) => {
+app.get('/reports/:id', async (requisition: any, response: any) => {
+    const report = reportsHistory[requisition.params.id];
+    response.status(report !== undefined ? 200 : 400).send(report);
+});
+
+app.get('/store', async (requisition: any, response: any) => {
     response.send(Store.getData());
+});
+
+app.post('/plugins', async (requisition: any, response: any) => {
+    const pluginsList = JSON.parse(requisition.rawBody);
+    pluginsList.forEach((plugin: string) => Configuration.getInstance().addPlugin(plugin));
+    response.status(200).send();
 });
 
 app.get('/configurations', async (requisition: any, response: any) => {
