@@ -8,6 +8,7 @@ import {
     RequisitionParser,
     RequisitionRunner
 } from 'enqueuer';
+import {Server} from '../server/server';
 
 interface ReportsHistory {
     [propName: string]: OutputRequisitionModel[];
@@ -16,10 +17,11 @@ interface ReportsHistory {
 export class RequisitionController implements Controller {
     private reportsHistory: ReportsHistory = {};
 
-    public registerRoute(app: any): void {
+    public registerRoute(server: Server): void {
         NotificationEmitter.on(Notifications.REQUISITION_RAN, (notification: OutputRequisitionModel) => this.onNotificationRan(notification));
 
-        app.post('/requisitions', (requisition: any, response: any) => this.postRequisitions(requisition, response))
+        server.getApplication()
+            .post('/requisitions', (requisition: any, response: any) => this.postRequisitions(requisition, response))
             .get('/requisitions/:id', (requisition: any, response: any) => this.getSingleRequisition(requisition, response))
             .get('/requisitions', (requisition: any, response: any) => this.getRequisitions(response));
 

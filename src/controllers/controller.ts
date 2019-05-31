@@ -1,3 +1,5 @@
+import {Server} from '../server/server';
+
 export interface Controller {
-    registerRoute(app: any): void;
+    registerRoute(server: Server): void;
 }
