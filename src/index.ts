@@ -14,6 +14,8 @@ import {
     RequisitionParser,
     OutputRequisitionModel
 } from 'enqueuer';
+import {RequisitionController} from './controllers/RequisitionController';
+import {Controller} from './controllers/controller';
 
 const app = express();
 
@@ -28,41 +30,12 @@ app.use((req: any, res: any, next: any) => {
     });
 });
 
-interface ReportsHistory {
-    [propName: string]: OutputRequisitionModel;
-}
-
-const reportsHistory: ReportsHistory = {};
 // Logger.setLoggerLevel('info');
 
-NotificationEmitter.on(Notifications.REQUISITION_RAN, (notification: OutputRequisitionModel) => {
-    console.log(`Requisition #${notification.id} ran`);
-    reportsHistory[notification.id] = notification;
-});
+const controllers: Controller[] = [];
+controllers.push(new RequisitionController());
 
-app.post('/requisitions', async (requisition: any, response: any) => {
-    const requisitionModel: InputRequisitionModel = new RequisitionParser().parse(requisition.rawBody);
-    try {
-        let id: string = requisitionModel.id;
-        if (requisitionModel.id === undefined) {
-            id = new IdGenerator(requisitionModel).generateId();
-            requisitionModel.id = id;
-        }
-        new RequisitionRunner(requisitionModel).run();
-        response.status(200).send({id});
-    } catch (e) {
-        response.status(400).send(e);
-    }
-});
-
-app.get('/requisitions/:id', (requisition: any, response: any) => {
-    const report = reportsHistory[requisition.params.id];
-    response.status(report !== undefined ? 200 : 400).send(report);
-});
-
-app.get('/requisitions', (requisition: any, response: any) => {
-    response.status(200).send(Object.keys(reportsHistory));
-});
+controllers.forEach((controller: Controller) => controller.registerRoute(app));
 
 app.get('/store', async (requisition: any, response: any) => {
     response.send(Store.getData());
