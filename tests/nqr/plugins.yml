@@ -5,12 +5,14 @@
             payload:
                 - enqueuer-plugin-amqp
                 - virgs
+            onInit:
+                script: |-
+                    publisher.payload.push(require('path').resolve());
             onMessageReceived:
                 script: payload = JSON.parse(body)
                 assertions:
                     -   expect: statusCode
                         toBeEqualTo: 200
-                    -   expectToBeTruthy: payload['enqueuer-plugin-amqp']
                     -   expectToBeFalsy: payload['virgs']
 -   publishers:
         -   type: http
