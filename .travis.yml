@@ -20,7 +20,7 @@ script:
     - npm run build
     - npm link
     - enqueuer-daemon &
-    - nqr -c tests/conf.yml
+    - nqr -c tests/nqr/conf.yml
     - npm install enqueuer-plugin-amqp
     - kill $(pidof enqueuer-daemon) || true
 
