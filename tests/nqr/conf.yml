@@ -1,0 +1,5 @@
+parallel: true
+
+files:
+    - tests/nqr/!(*conf).yml
+

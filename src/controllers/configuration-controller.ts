@@ -10,7 +10,7 @@ export class ConfigurationController implements Controller {
     }
 
     private getConfiguration(response: any): void {
-        response.status(200).send(Configuration.getInstance().getValues());
+        response.send(Configuration.getInstance().getValues());
     }
 
 }

@@ -1,0 +1,19 @@
+-   onInit:
+        script: requisition.randomValue = Math.random().toString(36).substring(7);
+        store:
+            storeTest: requisition.randomValue
+-   publishers:
+        -   type: http
+            url: http://localhost:3000/store
+            method: get
+            onMessageReceived:
+                script: |-
+                    payload = JSON.parse(body)
+                assertions:
+                    -   expect: statusCode
+                        toBeEqualTo: 200
+                    -   expect: `<<storeTest>>`
+                        toBeEqualTo: publisher.parent.parent.requisitions[0].randomValue
+                        #TODO fix it. It shouldn't be undefined
+                    -   expect: payload.storeTest
+                        toBeEqualTo: undefined

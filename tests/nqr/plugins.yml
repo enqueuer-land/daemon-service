@@ -1,0 +1,26 @@
+-   publishers:
+        -   type: http
+            url: http://localhost:3000/plugins
+            method: post
+            payload:
+                - enqueuer-plugin-amqp
+                - virgs
+            onMessageReceived:
+                script: payload = JSON.parse(body)
+                assertions:
+                    -   expect: statusCode
+                        toBeEqualTo: 200
+                    -   expectToBeTruthy: payload['enqueuer-plugin-amqp']
+                    -   expectToBeFalsy: payload['virgs']
+-   publishers:
+        -   type: http
+            url: http://localhost:3000/plugins
+            onMessageReceived:
+                script: payload = JSON.parse(body)
+                assertions:
+                    -   expect: statusCode
+                        toBeEqualTo: 200
+                    -   expect: payload[0]
+                        toBeEqualTo: `enqueuer-plugin-amqp`
+                    -   expect: payload[1]
+                        toBeEqualTo: `virgs`

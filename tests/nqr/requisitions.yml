@@ -2,7 +2,7 @@
         -   type: http
             url: http://localhost:3000/requisitions
             method: POST
-            payload: <<yml://misc/enqueuer-input.yml>>
+            payload: <<yml://tests/nqr/payloads/enqueuer-input.yml>>
             onMessageReceived:
                 script: payload = JSON.parse(body)
                 store:
@@ -11,12 +11,13 @@
     publishers:
         -   type: http
             url: http://localhost:3000/requisitions/<<responseId>>
-            method: get
             onMessageReceived:
                 script: payload = JSON.parse(body)
                 assertions:
                     -   expect: statusCode
                         toBeEqualTo: 200
+                    -   expect: payload.length
+                        toBeEqualTo: publisher.parent.parent.requisitions[0].publishers[0].payload.iterations
                     -   expectToBeTruthy: payload[0].valid
                     -   expectToBeTruthy: payload[0].subscriptions[0].valid
                     -   expectToBeTruthy: payload[0].publishers[0].valid

@@ -1,3 +1,4 @@
+iterations: 2
 publishers:
     -   type: http
         url: http://localhost:23075/enqueuer

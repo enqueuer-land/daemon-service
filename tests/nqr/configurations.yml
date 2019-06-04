@@ -1,0 +1,16 @@
+publishers:
+    -   type: http
+        url: http://localhost:3000/configurations
+        onMessageReceived:
+            script: payload = JSON.parse(body)
+            assertions:
+                -   expect: statusCode
+                    toBeEqualTo: 200
+                -   expectToBeDefined: payload.parallel
+#                -   expectToBeTruthy: payload.parallel
+                -   expectToBeDefined: payload.files
+                -   expectToBeDefined: payload.logLevel
+                -   expectToBeDefined: payload.outputs
+                -   expectToBeDefined: payload.maxReportLevelPrint
+                -   expectToBeDefined: payload.store
+                -   expectToBeDefined: payload.plugins
