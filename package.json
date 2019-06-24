@@ -41,7 +41,7 @@
   },
   "dependencies": {
     "@types/express": "^4.16.1",
-    "enqueuer": "^4.7.2",
+    "enqueuer": "^5.0.0",
     "express": "^4.16.4"
   }
 }
