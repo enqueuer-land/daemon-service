@@ -21,5 +21,4 @@ script:
     - npm link
     - enqueuer-daemon &
     - nqr -c tests/nqr/conf.yml
-    - npm install enqueuer-plugin-amqp
     - kill $(pidof enqueuer-daemon) || true

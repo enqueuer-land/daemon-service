@@ -6,7 +6,6 @@ publishers:
             assertions:
                 -   expect: statusCode
                     toBeEqualTo: 200
-                #TODO fix it. It should be truthy!
                 -   expectToBeDefined: payload.parallel
                 -   expectToBeDefined: payload.files
                 -   expectToBeDefined: payload.logLevel

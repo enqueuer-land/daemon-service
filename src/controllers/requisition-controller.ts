@@ -18,7 +18,7 @@ export class RequisitionController implements Controller {
     private reportsHistory: ReportsHistory = {};
 
     public registerRoute(server: Server): void {
-        NotificationEmitter.on(Notifications.REQUISITION_RAN, (notification: OutputRequisitionModel) => this.onNotificationRan(notification));
+        NotificationEmitter.on(Notifications.REQUISITION_FINISHED, (notification: OutputRequisitionModel) => this.onNotificationRan(notification));
 
         server.getApplication()
             .post('/requisitions', (requisition: any, response: any) => this.postRequisitions(requisition, response))
@@ -44,7 +44,11 @@ export class RequisitionController implements Controller {
                 id = new IdGenerator(requisitionModel).generateId();
                 requisitionModel.id = id;
             }
-            new RequisitionRunner(requisitionModel).run();
+            new RequisitionRunner(requisitionModel)
+                .run()
+                .then(() => {
+                    //do nothing
+                });
             response.status(200).send({id});
         } catch (e) {
             response.status(400).send(e);
@@ -52,12 +56,12 @@ export class RequisitionController implements Controller {
     }
 
     private onNotificationRan(notification: OutputRequisitionModel): void {
-        console.log(`Requisition #${notification.id} ran`);
-        const reportsHistoryElement = this.reportsHistory[notification.id];
+        const id = notification.requisition.id;
+        const reportsHistoryElement = this.reportsHistory[id];
         if (reportsHistoryElement === undefined) {
-            this.reportsHistory[notification.id] = [notification];
+            this.reportsHistory[id] = [notification.requisition];
         } else {
-            this.reportsHistory[notification.id].push(notification);
+            this.reportsHistory[id].push(notification.requisition);
         }
     }
 }

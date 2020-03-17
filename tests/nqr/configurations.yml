@@ -7,7 +7,6 @@ publishers:
                 -   expect: statusCode
                     toBeEqualTo: 200
                 -   expectToBeDefined: payload.parallel
-#                -   expectToBeTruthy: payload.parallel
                 -   expectToBeDefined: payload.files
                 -   expectToBeDefined: payload.logLevel
                 -   expectToBeDefined: payload.outputs
