@@ -34,7 +34,7 @@
     "enqueuer-daemon": "dist/index.js"
   },
   "devDependencies": {
-    "@types/node": "^14.0.1",
+    "@types/node": "^14.0.6",
     "ts-node": "^8.6.2",
     "tslint": "^5.20.1",
     "typescript": "^3.8.3"
